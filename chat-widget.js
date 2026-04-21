@@ -311,10 +311,11 @@
         name: s.name || '',
         email: s.email || '',
         introduced: !!s.introduced,
+        emailSent: !!s.emailSent,
         messages: Array.isArray(s.messages) ? s.messages : [],
       };
     } catch {
-      return { name: '', email: '', introduced: false, messages: [] };
+      return { name: '', email: '', introduced: false, emailSent: false, messages: [] };
     }
   }
 
@@ -501,42 +502,48 @@
     const sendBtn = document.getElementById('cs-send-btn');
     sendBtn.disabled = true;
 
-    const fullMessage = state.messages
-      .filter(m => m.role === 'user')
-      .map(m => m.text)
-      .join('\n---\n');
+    // Only send email notification on the FIRST message in a session
+    const isFirstMessage = !state.emailSent;
 
-    try {
-      const resp = await fetch(CONVEX_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: state.name,
-          email: state.email,
-          service: 'Live Chat',
-          message: '[Live Chat] ' + fullMessage,
-        }),
-      });
+    if (isFirstMessage) {
+      const fullMessage = state.messages
+        .filter(m => m.role === 'user')
+        .map(m => m.text)
+        .join('\n---\n');
 
-      showTyping();
-      await delay(800 + Math.random() * 600);
-      hideTyping();
+      try {
+        const resp = await fetch(CONVEX_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: state.name,
+            email: state.email,
+            service: 'Live Chat',
+            message: '[Live Chat] ' + fullMessage,
+          }),
+        });
 
-      if (resp.ok) {
-        const userMsgCount = state.messages.filter(m => m.role === 'user').length;
-        let reply;
-        if (userMsgCount === 1) {
-          reply = `Thanks ${state.name}! A team member will be with you shortly. Feel free to share more details in the meantime.`;
+        showTyping();
+        await delay(800 + Math.random() * 600);
+        hideTyping();
+
+        if (resp.ok) {
+          state.emailSent = true;
+          saveState();
+          addBotMessage(`Thanks ${state.name}! A team member will be with you shortly. Feel free to share more details in the meantime.`, true);
         } else {
-          reply = `Got it — we've noted that. We'll follow up with you at ${state.email} if we can't connect here.`;
+          addBotMessage("Sorry, something went wrong. Please try again or call us at (800) 652-3434.", true);
         }
-        addBotMessage(reply, true);
-      } else {
-        addBotMessage("Sorry, something went wrong. Please try again or call us at (800) 652-3434.", true);
+      } catch (err) {
+        hideTyping();
+        addBotMessage("Connection issue — please try again in a moment.", true);
       }
-    } catch (err) {
+    } else {
+      // Follow-up messages — just show in chat, no email
+      showTyping();
+      await delay(600 + Math.random() * 400);
       hideTyping();
-      addBotMessage("Connection issue — please try again in a moment.", true);
+      addBotMessage(`Got it — we've added that to your conversation. A team member will follow up with you at ${state.email}.`, true);
     }
 
     sendBtn.disabled = false;
