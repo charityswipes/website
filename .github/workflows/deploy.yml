@@ -1,0 +1,26 @@
+name: Deploy Website to IONOS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to IONOS via SFTP
+        env:
+          SFTP_HOST: ${{ secrets.IONOS_SFTP_HOST }}
+          SFTP_USER: ${{ secrets.IONOS_SFTP_USERNAME }}
+          SFTP_PASS: ${{ secrets.IONOS_SFTP_PASSWORD }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+          ENCODED_USER=$(python3 -c "import urllib.parse,os; print(urllib.parse.quote(os.environ['SFTP_USER'], safe=''))")
+          ENCODED_PASS=$(python3 -c "import urllib.parse,os; print(urllib.parse.quote(os.environ['SFTP_PASS'], safe=''))")
+          lftp -e "set sftp:auto-confirm yes; set net:max-retries 3; mirror -R --verbose --overwrite --no-perms ./ /; quit" \
+            "sftp://${ENCODED_USER}:${ENCODED_PASS}@${SFTP_HOST}:22"
