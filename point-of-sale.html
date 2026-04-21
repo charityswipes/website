@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point of Sale | Charity Swipes</title>
+    <meta name="description" content="Explore Clover POS systems from Charity Swipes — Duo Station, Flex, Mini, and Go. Modern payment processing with a portion of profits donated to charity.">
+    <meta property="og:title" content="Point of Sale Systems | Charity Swipes">
+    <meta property="og:description" content="Clover POS terminals for every business. Accept all payment types while giving back to charity.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://charityswipes.org/point-of-sale.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Clover POS Systems",
+      "description": "Point of sale systems offered by Charity Swipes",
+      "url": "https://charityswipes.org/point-of-sale.html",
+      "numberOfItems": 4,
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Clover Duo Station", "description": "Full countertop POS with dual screens"},
+        {"@type": "ListItem", "position": 2, "name": "Clover Flex", "description": "Portable POS for on-the-go payments"},
+        {"@type": "ListItem", "position": 3, "name": "Clover Mini", "description": "Compact countertop POS"},
+        {"@type": "ListItem", "position": 4, "name": "Clover Go", "description": "Mobile card reader for smartphones"}
+      ]
+    }
+    </script>
+
+    <style>
+        /* ===== CSS RESET & ROOT ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root {
+            --primary: #E91E63;
+            --primary-light: #FF5C8D;
+            --primary-dark: #AD1457;
+            --accent: #00E5FF;
+            --accent-dark: #00B8D4;
+            --bg-dark: #0A0A1A;
+            --bg-card: #12122A;
+            --bg-card-hover: #1A1A3A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0C0;
+            --text-muted: #6B6B8D;
+            --gradient-primary: linear-gradient(135deg, #E91E63 0%, #FF5C8D 50%, #00E5FF 100%);
+            --gradient-hero: linear-gradient(135deg, #0A0A1A 0%, #1A0A2E 50%, #0A1A2E 100%);
+            --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            --border-glow: rgba(233, 30, 99, 0.3);
+            --shadow-glow: 0 0 40px rgba(233, 30, 99, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+        .bg-orb-1 { width: 600px; height: 600px; background: var(--primary); top: -200px; right: -200px; }
+        .bg-orb-2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; left: -100px; animation-delay: -10s; }
+        .bg-orb-3 { width: 300px; height: 300px; background: #7C4DFF; top: 50%; left: 50%; animation-delay: -5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: var(--transition);
+            backdrop-filter: blur(0px);
+        }
+        .nav.scrolled {
+            background: rgba(10, 10, 26, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 0.6rem 0;
+        }
+        .nav-inner {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .nav-logo-icon {
+            width: 48px; height: 48px;
+            position: relative;
+        }
+        .nav-logo-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .nav-logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .nav-logo-text span { color: var(--primary-light); }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: var(--primary) !important;
+            color: white !important;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .nav-cta:hover {
+            background: var(--primary-light) !important;
+            transform: translateY(-1px);
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta-community {
+            color: var(--primary-light) !important;
+            font-weight: 600 !important;
+            transition: var(--transition);
+            border: 2px solid var(--primary-light);
+            padding: 0.4rem 1.1rem;
+            border-radius: 50px;
+        }
+        .nav-cta-community:hover {
+            background: var(--primary) !important;
+            color: white !important;
+        }
+        .nav-cta-community::after { display: none !important; }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .mobile-toggle span {
+            width: 24px; height: 2px;
+            background: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(233, 30, 99, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+        .btn-outline:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+        .btn-accent {
+            background: linear-gradient(135deg, #00E5FF, #00B8D4);
+            color: var(--bg-dark);
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+        }
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 229, 255, 0.4);
+        }
+
+        /* ===== GRADIENT TEXT ===== */
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== SECTION COMMON ===== */
+        section { position: relative; z-index: 1; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10rem 2rem 5rem;
+            position: relative;
+            background: var(--gradient-hero);
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, var(--bg-dark));
+            pointer-events: none;
+        }
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(233, 30, 99, 0.1);
+            border: 1px solid rgba(233, 30, 99, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            font-size: 0.85rem;
+            color: var(--primary-light);
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== PRODUCT CARDS ===== */
+        .products { padding: 4rem 2rem 6rem; }
+
+        .product-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 6rem;
+            padding: 3rem;
+            background: var(--gradient-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .product-card:hover {
+            border-color: rgba(233, 30, 99, 0.2);
+            box-shadow: var(--shadow-glow);
+        }
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at var(--glow-x, 50%) var(--glow-y, 50%), rgba(233,30,99,0.05) 0%, transparent 60%);
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .product-card:nth-child(even) { grid-template-columns: 1fr 1fr; }
+        .product-card:nth-child(even) .product-image { order: 2; }
+        .product-card:nth-child(even) .product-info { order: 1; }
+        .product-card:last-child { margin-bottom: 0; }
+
+        .product-image {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .product-image .image-glow {
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+        }
+        .product-image img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+            transition: var(--transition);
+        }
+        .product-card:hover .product-image img {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .product-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        .product-info h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+        .product-info > p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .features-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+        .feature-icon {
+            width: 22px; height: 22px;
+            border-radius: 6px;
+            background: rgba(0, 229, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        .feature-icon i { font-size: 0.6rem; color: var(--accent); }
+        .feature-item span {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===== CTA FOOTER ===== */
+        .cta-section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        .cta-card {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 3rem;
+            background: var(--gradient-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at center, rgba(233,30,99,0.06) 0%, transparent 50%);
+            animation: pulse-glow 6s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .cta-card h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-card .btn {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .footer-social a {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .footer-social a:hover { background: var(--primary); color: white; }
+        .footer-col h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.05em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 0.6rem; }
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        .footer-col a:hover { color: var(--text-primary); }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            line-height: 1.8;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 968px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: flex; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: rgba(10, 10, 26, 0.98);
+                backdrop-filter: blur(20px);
+                padding: 2rem;
+                gap: 1.5rem;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .product-card {
+                grid-template-columns: 1fr !important;
+                gap: 2rem;
+                padding: 2rem;
+            }
+            .product-card:nth-child(even) .product-image { order: 0; }
+            .product-card:nth-child(even) .product-info { order: 0; }
+            .features-grid { grid-template-columns: 1fr; }
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 640px) {
+            .hero { padding: 8rem 1.5rem 4rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .product-card { padding: 1.5rem; }
+            .cta-card { padding: 2.5rem 1.5rem; }
+            .footer-inner { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <img src="images/logo-heart.png" alt="Charity Swipes" width="48" height="48">
+                </div>
+                <div class="nav-logo-text">Charity<span>Swipes</span></div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="point-of-sale.html" style="color: var(--primary-light);">POS Systems</a></li>
+                <li><a href="index.html#cash-discount">Cash Discount</a></li>
+                <li><a href="index.html#mission">Our Mission</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="https://community.charityswipes.org" class="nav-cta-community">Join The Community</a></li>
+                <li><a href="index.html#contact" class="nav-cta">Get Started</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content fade-in">
+            <div class="hero-badge">
+                <i class="fas fa-cash-register"></i>
+                Clover POS Systems
+            </div>
+            <h1>Systems to Meet <span class="gradient-text">Your Needs</span></h1>
+            <p>From full countertop stations to portable card readers, find the perfect Clover POS solution for your business — with every swipe giving back to charity.</p>
+            <div class="hero-buttons">
+                <a href="index.html#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Let's Get Started</a>
+                <a href="#products" class="btn btn-outline"><i class="fas fa-th-large"></i> View Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+
+            <!-- ═══════════════════ CLOVER DUO STATION ═══════════════════ -->
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="image-glow" style="background: var(--accent);"></div>
+                    <img src="https://charityswipes.com/wp-content/uploads/elementor/thumbs/Clover-2018-Pic-3-odzfu8vjhituyo3qsf1k1bqe9g0rewb1zkyuxm8v1y.png" 
+                         alt="Clover Duo Station POS System" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">01 — Countertop</div>
+                    <h2>Clover <span class="gradient-text">Duo Station</span></h2>
+                    <p>Clover Duo Station replaces your cash register, payment terminal, receipt printer and cash drawer with an all-in-one solution. Optional accessories such as a handheld barcode scanner integrate seamlessly with the Clover Duo Station.</p>
+                    
+                    <div class="features-label">Features</div>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Accept all card types including Apple & Droid Pay</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Detailed analytics and inventory management</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Cloud-based software — view sales from any device</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Rotating screen for customer signatures</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Fingerprint scanner for employee logins</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Built-in barcode scanner + front-facing camera</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>14″ touch screen display</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Ethernet & WiFi connectivity</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>300+ apps in the Clover App Store</span>
+                        </div>
+                    </div>
+                    <a href="index.html#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Get a Clover</a>
+                </div>
+            </div>
+
+            <!-- ═══════════════════ CLOVER FLEX ═══════════════════ -->
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="image-glow" style="background: var(--primary);"></div>
+                    <img src="https://charityswipes.com/wp-content/uploads/elementor/thumbs/Flex-Newest-o7s5ysg4k42lk2o34yzkiopbw5nz0mfyjg5jt2bt88.png" 
+                         alt="Clover Flex Portable POS" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">02 — Portable</div>
+                    <h2>Clover <span class="gradient-text">Flex</span></h2>
+                    <p>Clover Flex is your solution for accepting credit cards on-the-go. Processing via both Wifi or cellular data, Clover Flex allows you to accept cards just about anywhere! You also get all the business-building features that Clover is known for, the ability to add optional applications to customize your system, and cloud-based data storage.</p>
+                    
+                    <div class="features-label">Features</div>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Wifi and cellular connectivity</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Accept multiple credit and debit types</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>EMV (chip + PIN; chip + signature)</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Contactless (including Apple Pay)</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Swipe (MSR) & PIN Debit</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Barcode scanner & front-facing camera</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>7″ Antimicrobial Corning® Gorilla® Glass</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Lasts all day on a single charge</span>
+                        </div>
+                    </div>
+                    <a href="index.html#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Get a Flex</a>
+                </div>
+            </div>
+
+            <!-- ═══════════════════ CLOVER MINI ═══════════════════ -->
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="image-glow" style="background: #7C4DFF;"></div>
+                    <img src="https://charityswipes.com/wp-content/uploads/elementor/thumbs/Small-Clover-Mini-no-Shadow-oe7cvjjnxdrqqizy0x3wwx8vsneayixxga85w7pxbm.png" 
+                         alt="Clover Mini Compact POS" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">03 — Compact</div>
+                    <h2>Clover <span class="gradient-text">Mini</span></h2>
+                    <p>A compact countertop POS with the guts to go big. The Clover Mini is as powerful as it is sleek — and the lightweight footprint won't hog your counter space, or any workspace for that matter. Customize your Clover Mini with do-it-all apps for accounting, inventory, marketing, gift cards and whatever else your business needs.</p>
+                    
+                    <div class="features-label">Features</div>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>All payment types including Apple, Samsung & Droid Pay</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Wifi or 3G connectivity</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>300+ customization apps available</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>EMV (chip + PIN; chip + signature)</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Forward-facing camera & barcode scanner</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Employee clock-in/out capability</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Inventory management built in</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Bright, large touch screen display</span>
+                        </div>
+                    </div>
+                    <a href="index.html#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Get a Mini</a>
+                </div>
+            </div>
+
+            <!-- ═══════════════════ CLOVER GO ═══════════════════ -->
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="image-glow" style="background: var(--accent);"></div>
+                    <img src="https://charityswipes.com/wp-content/uploads/elementor/thumbs/Go-PNG-o7mrrkescxm4j1t6yz6f2wakogik17rs03tvj8a7ye.png" 
+                         alt="Clover Go Mobile Card Reader" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">04 — Mobile</div>
+                    <h2>Clover <span class="gradient-text">Go</span></h2>
+                    <p>Securely and reliably accept credit and debit cards — including EMV® chip cards — with ease, right from your smartphone or tablet. Clover Go also comes with clear and intuitive activity reporting, along with insights on customer behavior and trends in your industry. Reliable support is available around the clock.</p>
+                    
+                    <div class="features-label">Features</div>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Connects to any smart device via Bluetooth</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Free app download — ready in minutes</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>All payment types: EMV, Apple, Droid & Samsung Pay</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Optional desktop stand available</span>
+                        </div>
+                    </div>
+                    <a href="index.html#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Get a Go</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-card fade-in">
+            <h2>Let Us Help You Find the <span class="gradient-text">Right Solution</span></h2>
+            <p>Every business is different. Tell us about yours and we'll match you with the perfect POS system — while giving back to the causes you care about.</p>
+            <a href="index.html#contact" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                <i class="fas fa-comments"></i> Start the Conversation
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="index.html" class="nav-logo">
+                    <div class="nav-logo-icon">
+                        <img src="images/logo-heart.png" alt="Charity Swipes" width="48" height="48">
+                    </div>
+                    <div class="nav-logo-text">Charity<span>Swipes</span></div>
+                </a>
+                <p>Credit card processing that gives back. A portion of every account's profit goes to a charity of your choosing.</p>
+                <div class="footer-social">
+                    <a href="https://twitter.com/CharitySwipes" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/charityswipes/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/charity-swipes" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.facebook.com/charityswipes/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Products</h4>
+                <ul>
+                    <li><a href="index.html#services">Processing</a></li>
+                    <li><a href="point-of-sale.html">Point of Sale</a></li>
+                    <li><a href="index.html#cash-discount">Cash Discount</a></li>
+                    <li><a href="index.html#services">E-Commerce</a></li>
+                    <li><a href="index.html#services">Mobile POS</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="index.html#mission">About Us</a></li>
+                    <li><a href="index.html#mission">Charities</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Videos</a></li>
+                    <li><a href="#">Client Login</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Affiliate Program</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>
+                &copy; 2026 Processing Forward Inc. All Rights Reserved.<br>
+                Processing Forward, Inc. / Charity Swipes is a registered Independent Sales Organization of Wells Fargo Bank, N.A., Concord, CA.<br>
+                The Clover name and logo are owned by Clover Network, Inc., a wholly owned subsidiary of First Data Corporation, and are registered or used in the U.S. and many foreign countries.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== Navigation scroll effect =====
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ===== Mobile menu toggle =====
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // ===== Scroll animations =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ===== Card hover glow tracking =====
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--glow-x', x + '%');
+                card.style.setProperty('--glow-y', y + '%');
+            });
+        });
+    </script>
+</body>
+</html>
