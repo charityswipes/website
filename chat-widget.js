@@ -14,68 +14,53 @@
   // ─── Inject CSS ───
   const style = document.createElement('style');
   style.textContent = `
-    /* Chat Widget Styles */
+    /* Chat Widget — Subtle & Non-Intrusive */
     #cs-chat-btn {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
-      width: 62px;
-      height: 62px;
+      bottom: 24px;
+      right: 24px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #E91E63 0%, #FF5C8D 100%);
+      background: rgba(233, 30, 99, 0.75);
       border: none;
       cursor: pointer;
       z-index: 99999;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 24px rgba(233,30,99,0.4);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
       transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      opacity: 0.7;
     }
     #cs-chat-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 32px rgba(233,30,99,0.55);
+      opacity: 1;
+      transform: scale(1.05);
+      background: rgba(233, 30, 99, 0.95);
+      box-shadow: 0 4px 20px rgba(233,30,99,0.3);
     }
-    #cs-chat-btn svg { width: 28px; height: 28px; fill: #fff; transition: all 0.3s ease; }
+    #cs-chat-btn svg { width: 22px; height: 22px; fill: #fff; transition: all 0.3s ease; }
     #cs-chat-btn.open svg.icon-chat { display: none; }
     #cs-chat-btn:not(.open) svg.icon-close { display: none; }
 
-    #cs-chat-btn .badge {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 18px;
-      height: 18px;
-      background: #00E5FF;
-      border-radius: 50%;
-      border: 2px solid #0A0A1A;
-      animation: cs-pulse 2s ease-in-out infinite;
-    }
-    #cs-chat-btn.open .badge { display: none; }
-
-    @keyframes cs-pulse {
-      0%,100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.7; }
-    }
-
     #cs-chat-panel {
       position: fixed;
-      bottom: 100px;
-      right: 28px;
-      width: 380px;
-      max-height: 540px;
+      bottom: 84px;
+      right: 24px;
+      width: 360px;
+      max-height: 480px;
       background: #0E0E22;
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
+      border-radius: 16px;
       z-index: 99998;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(233,30,99,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
       opacity: 0;
-      transform: translateY(20px) scale(0.95);
+      transform: translateY(12px) scale(0.97);
       pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
     }
     #cs-chat-panel.open {
       opacity: 1;
@@ -86,15 +71,15 @@
     /* Header */
     .cs-chat-header {
       background: linear-gradient(135deg, #1A0A2E 0%, #12122A 100%);
-      padding: 20px 22px;
+      padding: 16px 18px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
     .cs-chat-avatar {
-      width: 44px;
-      height: 44px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: linear-gradient(135deg, #E91E63, #FF5C8D);
       display: flex;
@@ -102,25 +87,25 @@
       justify-content: center;
       flex-shrink: 0;
     }
-    .cs-chat-avatar svg { width: 22px; height: 22px; fill: #fff; }
+    .cs-chat-avatar svg { width: 18px; height: 18px; fill: #fff; }
     .cs-chat-header-text h4 {
       margin: 0;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: #fff;
       font-family: 'Space Grotesk', 'Inter', sans-serif;
     }
     .cs-chat-header-text p {
       margin: 2px 0 0;
-      font-size: 12px;
+      font-size: 11px;
       color: #A0A0C0;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
     .cs-chat-header-text .online-dot {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       background: #4CAF50;
       border-radius: 50%;
       display: inline-block;
@@ -130,35 +115,35 @@
     .cs-chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 18px 16px;
+      padding: 16px 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      min-height: 200px;
-      max-height: 320px;
+      gap: 10px;
+      min-height: 180px;
+      max-height: 280px;
       scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.1) transparent;
+      scrollbar-color: rgba(255,255,255,0.08) transparent;
     }
-    .cs-chat-messages::-webkit-scrollbar { width: 5px; }
+    .cs-chat-messages::-webkit-scrollbar { width: 4px; }
     .cs-chat-messages::-webkit-scrollbar-track { background: transparent; }
-    .cs-chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    .cs-chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
 
     .cs-msg {
       max-width: 82%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: 13.5px;
-      line-height: 1.55;
+      padding: 9px 13px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.5;
       font-family: 'Inter', -apple-system, sans-serif;
-      animation: cs-msg-in 0.3s ease;
+      animation: cs-msg-in 0.25s ease;
     }
     @keyframes cs-msg-in {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .cs-msg.bot {
       background: rgba(255,255,255,0.06);
-      color: #E0E0F0;
+      color: #D0D0E8;
       border-bottom-left-radius: 4px;
       align-self: flex-start;
     }
@@ -170,8 +155,8 @@
     }
     .cs-msg .ts {
       font-size: 10px;
-      color: rgba(255,255,255,0.35);
-      margin-top: 4px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 3px;
       display: block;
     }
 
@@ -179,13 +164,13 @@
     .cs-typing {
       display: flex;
       gap: 4px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       align-self: flex-start;
     }
     .cs-typing span {
-      width: 7px;
-      height: 7px;
-      background: rgba(255,255,255,0.25);
+      width: 6px;
+      height: 6px;
+      background: rgba(255,255,255,0.2);
       border-radius: 50%;
       animation: cs-bounce 1.4s ease-in-out infinite;
     }
@@ -193,46 +178,42 @@
     .cs-typing span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes cs-bounce {
       0%,60%,100% { transform: translateY(0); }
-      30% { transform: translateY(-6px); }
+      30% { transform: translateY(-5px); }
     }
 
     /* Input area */
     .cs-chat-input {
-      padding: 14px 16px;
+      padding: 12px 14px;
       border-top: 1px solid rgba(255,255,255,0.06);
       background: rgba(255,255,255,0.02);
     }
     .cs-chat-input form {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
     }
-    .cs-chat-input input,
-    .cs-chat-input textarea {
+    .cs-chat-input input {
       flex: 1;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 10px 14px;
+      border-radius: 10px;
+      padding: 9px 12px;
       color: #fff;
-      font-size: 13.5px;
+      font-size: 13px;
       font-family: 'Inter', sans-serif;
       outline: none;
       transition: border 0.2s ease;
-      resize: none;
     }
-    .cs-chat-input input:focus,
-    .cs-chat-input textarea:focus {
-      border-color: rgba(233,30,99,0.4);
+    .cs-chat-input input:focus {
+      border-color: rgba(233,30,99,0.3);
     }
-    .cs-chat-input input::placeholder,
-    .cs-chat-input textarea::placeholder {
-      color: rgba(255,255,255,0.3);
+    .cs-chat-input input::placeholder {
+      color: rgba(255,255,255,0.25);
     }
     .cs-chat-input button[type="submit"] {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       background: linear-gradient(135deg, #E91E63, #FF5C8D);
       border: none;
       cursor: pointer;
@@ -244,51 +225,50 @@
     }
     .cs-chat-input button[type="submit"]:hover {
       transform: scale(1.05);
-      box-shadow: 0 2px 12px rgba(233,30,99,0.4);
     }
     .cs-chat-input button[type="submit"]:disabled {
-      opacity: 0.4;
+      opacity: 0.35;
       cursor: not-allowed;
       transform: none;
     }
-    .cs-chat-input button svg { width: 18px; height: 18px; fill: #fff; }
+    .cs-chat-input button svg { width: 16px; height: 16px; fill: #fff; }
 
     /* Intro form */
     .cs-intro-form {
-      padding: 20px 18px;
+      padding: 16px 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .cs-intro-form label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: #A0A0C0;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      margin-bottom: -4px;
+      margin-bottom: -2px;
     }
     .cs-intro-form input {
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px;
-      padding: 10px 14px;
+      border-radius: 8px;
+      padding: 9px 12px;
       color: #fff;
-      font-size: 13.5px;
+      font-size: 13px;
       font-family: 'Inter', sans-serif;
       outline: none;
       transition: border 0.2s ease;
     }
-    .cs-intro-form input:focus { border-color: rgba(233,30,99,0.4); }
-    .cs-intro-form input::placeholder { color: rgba(255,255,255,0.3); }
+    .cs-intro-form input:focus { border-color: rgba(233,30,99,0.3); }
+    .cs-intro-form input::placeholder { color: rgba(255,255,255,0.25); }
     .cs-intro-form button {
-      margin-top: 6px;
-      padding: 11px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #E91E63 0%, #FF5C8D 50%, #00E5FF 100%);
+      margin-top: 4px;
+      padding: 10px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #E91E63, #FF5C8D);
       border: none;
       color: #fff;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -296,27 +276,27 @@
     }
     .cs-intro-form button:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(233,30,99,0.3);
+      box-shadow: 0 3px 12px rgba(233,30,99,0.25);
     }
 
     .cs-powered {
       text-align: center;
-      padding: 8px;
+      padding: 6px;
       font-size: 10px;
-      color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.15);
     }
 
     /* Mobile */
     @media (max-width: 480px) {
       #cs-chat-panel {
-        right: 0;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        max-height: 100vh;
-        border-radius: 20px 20px 0 0;
+        right: 10px;
+        left: 10px;
+        bottom: 84px;
+        width: auto;
+        max-height: 70vh;
+        border-radius: 16px;
       }
-      #cs-chat-btn { bottom: 20px; right: 20px; }
+      #cs-chat-btn { bottom: 18px; right: 18px; width: 46px; height: 46px; }
     }
   `;
   document.head.appendChild(style);
@@ -347,10 +327,9 @@
   // ─── Build DOM ───
   const btn = document.createElement('button');
   btn.id = 'cs-chat-btn';
-  btn.setAttribute('aria-label', 'Open live chat');
+  btn.setAttribute('aria-label', 'Open chat');
   btn.innerHTML = `
-    <div class="badge"></div>
-    <svg class="icon-chat" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/><path d="M7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/></svg>
+    <svg class="icon-chat" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg>
     <svg class="icon-close" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
   `;
   document.body.appendChild(btn);
@@ -369,7 +348,7 @@
     </div>
     <div class="cs-chat-messages" id="cs-messages"></div>
     <div id="cs-input-area"></div>
-    <div class="cs-powered">Charity Swipes &mdash; Processing that gives back</div>
+    <div class="cs-powered">${BRAND}</div>
   `;
   document.body.appendChild(panel);
 
@@ -388,16 +367,24 @@
     }
   });
 
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (isOpen && !panel.contains(e.target) && !btn.contains(e.target)) {
+      isOpen = false;
+      btn.classList.remove('open');
+      panel.classList.remove('open');
+    }
+  });
+
   // ─── Render ───
   function renderChat() {
-    // Render messages
     messagesEl.innerHTML = '';
     if (!state.introduced) {
-      addBotMessage("Hi there! 👋 Welcome to Charity Swipes. I'd love to help you out. What's your name and email so we can get started?", false);
+      addBotMessage("Hi there! 👋 How can we help you today? Drop your name and email to get started.", false);
       renderIntroForm();
     } else {
       if (state.messages.length === 0) {
-        addBotMessage(`Hey ${state.name}! 👋 How can we help you today?`, false);
+        addBotMessage(`Hey ${state.name}! How can we help you today?`, false);
       } else {
         state.messages.forEach(m => {
           addMessageBubble(m.role, m.text, m.time);
@@ -460,7 +447,6 @@
       </div>
     `;
     document.getElementById('cs-intro-btn').addEventListener('click', handleIntro);
-    // Allow Enter key
     inputArea.querySelectorAll('input').forEach(inp => {
       inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleIntro(); });
     });
@@ -488,7 +474,7 @@
     inputArea.innerHTML = `
       <div class="cs-chat-input">
         <form id="cs-msg-form">
-          <input type="text" id="cs-msg-input" placeholder="Type your message..." autocomplete="off">
+          <input type="text" id="cs-msg-input" placeholder="Type a message..." autocomplete="off">
           <button type="submit" id="cs-send-btn" aria-label="Send">
             <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
@@ -512,17 +498,14 @@
     addUserMessage(text);
     scrollToBottom();
 
-    // Disable input while sending
     const sendBtn = document.getElementById('cs-send-btn');
     sendBtn.disabled = true;
 
-    // Build the full conversation for context
     const fullMessage = state.messages
       .filter(m => m.role === 'user')
       .map(m => m.text)
       .join('\n---\n');
 
-    // Send to Convex
     try {
       const resp = await fetch(CONVEX_URL, {
         method: 'POST',
@@ -536,25 +519,24 @@
       });
 
       showTyping();
-      await delay(1200 + Math.random() * 800);
+      await delay(800 + Math.random() * 600);
       hideTyping();
 
       if (resp.ok) {
-        // Auto-reply based on message count
         const userMsgCount = state.messages.filter(m => m.role === 'user').length;
         let reply;
         if (userMsgCount === 1) {
-          reply = `Thanks ${state.name}! We've received your message and a team member will be with you shortly. In the meantime, feel free to share more details about what you're looking for.`;
+          reply = `Thanks ${state.name}! A team member will be with you shortly. Feel free to share more details in the meantime.`;
         } else {
-          reply = `Got it! We've updated your conversation. A team member will follow up with you at ${state.email} if we can't connect here.`;
+          reply = `Got it — we've noted that. We'll follow up with you at ${state.email} if we can't connect here.`;
         }
         addBotMessage(reply, true);
       } else {
-        addBotMessage("Sorry, something went wrong. Please try again or email us directly at support@charityswipes.com.", true);
+        addBotMessage("Sorry, something went wrong. Please try again or call us at (800) 652-3434.", true);
       }
     } catch (err) {
       hideTyping();
-      addBotMessage("Looks like we're having connection issues. Please try again in a moment!", true);
+      addBotMessage("Connection issue — please try again in a moment.", true);
     }
 
     sendBtn.disabled = false;
@@ -572,20 +554,5 @@
   function delay(ms) {
     return new Promise(r => setTimeout(r, ms));
   }
-
-  // ─── Auto-open after delay on first visit ───
-  if (!state.introduced) {
-    setTimeout(() => {
-      if (!isOpen) {
-        // Subtle nudge — don't auto-open, just show the badge is pulsing
-      }
-    }, 5000);
-  }
-
-  // ─── Remove badge after first open ───
-  btn.addEventListener('click', () => {
-    const badge = btn.querySelector('.badge');
-    if (badge) setTimeout(() => badge.remove(), 300);
-  }, { once: true });
 
 })();
